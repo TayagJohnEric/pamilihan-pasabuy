@@ -5,8 +5,8 @@
 
     <!-- Name & Email -->
     <div class="hidden sm:block leading-tight">
-        <p class="text-sm font-medium text-gray-900 m-0">John eric tayag</p>
-        <p class="text-sm text-gray-500 truncate m-0">test</p>
+        <p class="text-sm font-semibold text-gray-800 m-0">John eric tayag</p>
+        <p class="text-xs font-medium text-green-500 truncate m-0">Customer</p>
     </div>
     
 
