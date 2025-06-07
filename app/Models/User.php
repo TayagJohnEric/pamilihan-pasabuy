@@ -2,47 +2,98 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
+        'role',
+        'first_name',
+        'last_name',
         'email',
+        'phone_number',
         'password',
+        'profile_image_url',
+        'email_verified_at',
+        'remember_token',
+        'is_active',
+        'last_login_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
+        'is_active' => 'boolean',
+        'password' => 'hashed',
+    ];
+
+    public function rider()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Rider::class);
+    }
+
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class);
+    }
+
+    public function customerOrders()
+    {
+        return $this->hasMany(Order::class, 'customer_user_id');
+    }
+
+    public function riderOrders()
+    {
+        return $this->hasMany(Order::class, 'rider_user_id');
+    }
+
+    public function savedAddresses()
+    {
+        return $this->hasMany(SavedAddress::class);
+    }
+
+    public function shoppingCartItems()
+    {
+        return $this->hasMany(ShoppingCartItem::class);
+    }
+
+    public function riderPayouts()
+    {
+        return $this->hasMany(RiderPayout::class, 'rider_user_id');
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function reviewedRiderApplications()
+    {
+        return $this->hasMany(RiderApplication::class, 'reviewed_by_user_id');
+    }
+
+    public function reviewedVendorApplications()
+    {
+        return $this->hasMany(VendorApplication::class, 'reviewed_by_user_id');
+    }
+
+    public function orderStatusUpdates()
+    {
+        return $this->hasMany(OrderStatusHistory::class, 'updated_by_user_id');
     }
 }
