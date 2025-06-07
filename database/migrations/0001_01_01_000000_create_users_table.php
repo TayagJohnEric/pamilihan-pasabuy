@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->enum('role', ['customer', 'vendor', 'rider', 'admin'])->default('customer');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone_number')->unique()->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('profile_image_url')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('remember_token')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('last_login_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 
