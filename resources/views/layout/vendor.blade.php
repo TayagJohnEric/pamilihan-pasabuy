@@ -37,7 +37,7 @@
             @include('components.vendor.header')
             
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto p-4 bg-gray-50">
+            <main class="flex-1 overflow-y-auto p-4 bg-gray-100">
                 @yield('content')
             </main>
         </div>
